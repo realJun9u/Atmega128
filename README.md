@@ -3,8 +3,8 @@
 ## 타이머/카운터  
 ### 타이머/카운터0번  
 - 8비트 계수기 (0~255 계수 가능, TCNT0에 저장)  
-- overflow interrupt : TCNT0가 255에서 1이 증가하면 0이 되고 이 때 overflow interrupt 발생  
-- compare match interrupt : TCNT0가 OCR0값
+- overflow interrupt : TCNT0가 255에서 1이 증가하면 0이 되고 이 때 Overflow Interrupt 발생  
+- compare match interrupt : TCNT0가 OCR0값을 비교하여 같으면 Interrupt 발생
 
 #### 관련 레지스터  
 1. TIMSK(Timer/Counter Interrupt Mask Register) : 타이머/카운터 0~2에서 발생하는 인터럽트를 개별적으로 허용하는 기능을 수행하는 레지스터  
