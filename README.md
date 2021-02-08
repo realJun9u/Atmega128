@@ -21,8 +21,10 @@
 ![TCCR0](https://t1.daumcdn.net/cfile/tistory/998BED3359C374FC1A)  
 > BIT 7 - FOC0(Force Output Compare) : 강제로 OSC0 단자에 신호 출력 (인터럽트 X)  
   BIT 3,6 - WGM01,WGM00 (Waveform Generation Mode) : 파형 출력 모드  
-  > Normal mode : Overflow Interrupt에 사용  
-    CTC mode(Compare Timer on Compare Match mode) : Compare Match Interrupt에 사용  
+  > Normal mode : 0 0 Overflow Interrupt에 사용  
+    CTC mode(Compare Timer on Compare Match mode) : 1 0 Compare Match Interrupt에 사용  
+    Fast PWM : 1 1 DC모터 세기, LED 밝기, 서보모터 등 듀티비를 이용하여 제어할 때 사용  
+    Phase Correct PWM : 0 1 
   ![WGM](https://t1.daumcdn.net/cfile/tistory/990BE53359C3773326)  
   BIT 5,4 - COM01,COM00 (Compare Match Output Mode) : 비교매치 출력 모드  
   ![phase correct PWM](https://t1.daumcdn.net/cfile/tistory/992A473359CF36AD17)  
