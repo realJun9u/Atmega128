@@ -11,9 +11,9 @@
 ![TIMSK](https://t1.daumcdn.net/cfile/tistory/999C8C3359C377F533)
 > BIT 1 - OCIE0 (Output Compare Match Interrupt Enable) : T/C0 비교일치 인터럽트 활성화  
   BIT 0 - TOIE0 (Timer/Counter Overflow Interrupt Enable) :  T/C0 오버플로우 인터럽트 활성화  
-2. TIFR(Timer/Counter Interrupt Flag Register)  
+2. TIFR(Timer/Counter Interrupt Flag Register) : 타이머/카운터 0~2에서 발생하는 인터럽트 플래그 저장  
 ![TIFR](https://t1.daumcdn.net/cfile/tistory/9957FC3359C37A921B)
-> BIT 1 - OCF0 (Output Compare Match Flag) : TCNT0 = OCR0 경우 1로 set되고 인터럽트 요청  
+> BIT 1 - OCF0 (Output Compare Match Flag) : TCNTn = OCRn 경우 1로 set되고 인터럽트 요청  
   BIT 0 - TOV0 (Timer/Counter Overflow Flag) : 오버플로우 발생시 1로 set되고 인터럽트 요청  
 3. TCCRn(Timer/Counter Control Register) : 동작모드 / 분주비 설정  
 ![TCCR0](https://t1.daumcdn.net/cfile/tistory/998BED3359C374FC1A)  
@@ -41,5 +41,11 @@
 1. TCCRnA : 채널 A,B,C의 비교 출력 모드/ 파형 발생 모드 설정  
 ![TCCRnA](https://mblogthumb-phinf.pstatic.net/20160105_21/gwangryr_1451925127720LvTo1_PNG/1.PNG?type=w2)  
 2. TCCRnB : 입력 캡쳐 설정/ 파형 발생 모드 설정/ 분주비 설정  
-![TCCRnA](https://mblogthumb-phinf.pstatic.net/20160105_166/gwangryr_1451925870955bSqI7_PNG/2.PNG?type=w2)  
+![TCCRnB](https://mblogthumb-phinf.pstatic.net/20160105_166/gwangryr_1451925870955bSqI7_PNG/2.PNG?type=w2)  
 3. TCCRnC : 채널 A,B,C의 강제 출력 비교 설정  
+![TCCRnC](https://mblogthumb-phinf.pstatic.net/20160105_134/gwangryr_1451926710526e5atN_PNG/3.PNG?type=w2)  
+4. TCNTn : 16비트 구조로 값을 쓸 때는 TCNTnH -> TCNTnL, 읽을 때는 TCNTnL -> TCNTnH 순서 주의  
+5. OCRnA,B,C : TCNT 값과 비교할 16비트 값을 저장  
+6. ICRn : 입력 캡쳐 신호에 의해 TCNT 값을 캡처하여 저장하는 레지스터  
+7. ETIMSK : 타이머 1,3 인터럽트 관련  
+8. ETIFR : 타이머 1,3 인터럽트 플래그 저장  
