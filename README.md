@@ -1,6 +1,7 @@
 # Atmega128
-
-## 타이머/카운터  
+- [타이머/카운터](#timer-counter)
+- [USART](#uart)
+## Timer Counter 
 - overflow interrupt : TCNTn값이 Max에서 1이 증가하면 0이 되고 이 때 Overflow Interrupt 발생  
 - compare match interrupt : TCNTn가 OCRn값을 비교하여 같으면 Interrupt 발생  
 #### 공통 레지스터  
