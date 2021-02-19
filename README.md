@@ -1,10 +1,11 @@
 # Atmega128
 - [타이머/카운터](#timer-counter)
 - [USART](#uart)
+- [ADC](#ad-convertor)
 ## Timer Counter 
 - overflow interrupt : TCNTn값이 Max에서 1이 증가하면 0이 되고 이 때 Overflow Interrupt 발생  
 - compare match interrupt : TCNTn가 OCRn값을 비교하여 같으면 Interrupt 발생  
-#### 공통 레지스터  
+### 공통 레지스터  
 1. TIMSK(Timer/Counter Interrupt Mask Register) : 타이머/카운터 0~2에서 발생하는 인터럽트를 개별적으로 허용하는 기능을 수행하는 레지스터  
 ![TIMSK](https://t1.daumcdn.net/cfile/tistory/999C8C3359C377F533)
 > BIT 1 - OCIE0 (Output Compare Match Interrupt Enable) : T/C0 비교일치 인터럽트 활성화  
@@ -18,7 +19,7 @@
 ### 타이머/카운터 0,2번  
 - 8비트 계수기 (0~255 계수 가능, TCNTn에 저장)  
 - 1개의 PWM출력(OCn)을 가진다.
-#### 관련 레지스터  
+### 관련 레지스터  
 1. TCCRn(Timer/Counter Control Register) : 동작모드 / 분주비 설정  
 ![TCCR0](https://t1.daumcdn.net/cfile/tistory/998BED3359C374FC1A)  
 > BIT 7 - FOC0(Force Output Compare) : 강제로 OSC0 단자에 신호 출력 (인터럽트 X)  
@@ -38,7 +39,7 @@
 ### 타이머/카운터 1,3번
 - 16비트 계수기 (0 ~ 65535 계수 가능,TCNTn에 저장)  
 - 3개의 PWM 출력과 1개의 캡쳐 기능을 가진다.
-#### 관련 레지스터  
+### 관련 레지스터  
 1. TCCRnA : 채널 A,B,C의 비교 출력 모드/ 파형 발생 모드 설정  
 ![TCCRnA](https://mblogthumb-phinf.pstatic.net/20160105_21/gwangryr_1451925127720LvTo1_PNG/1.PNG?type=w2)  
 2. TCCRnB : 입력 캡쳐 설정/ 파형 발생 모드 설정/ 분주비 설정  
@@ -49,10 +50,51 @@
 5. ETIMSK : 타이머 1,3 인터럽트 관련  
 6. ETIFR : 타이머 1,3 인터럽트 플래그 저장  
 
-## UART 
+## UART  
+- UART는 컴퓨터의 비동기 직렬 통신을 처리하는 프로그램으로서 보통 마이크로칩으로 실현되며, RS-232C 를 제공하여, 모뎀이나 기타 다른 직렬 장치들과 통신하거나 데이터를 주고받을 수 있게 하는 것이다. 예전에는 PC의 COM Port, 56Kbps 속도 이하 모뎀 등에서 이용되었으나 현재 PC에서는 USB가 그 뒤를 이어나가 대체되고 있는 실정이다. 하지만 아직까지는 막강한 표준력과 호환성을 자랑하여 MCU등에 표준적으로 사용하는 통신 방법이다.  
 - UART : Universal Asynchronous serial Reciever and Transmitter (비동기 직렬 통신)  
 - USART : Universal Synchronous and Asyncronous serial Reciever and Transmitter (동기/비동기 직렬 통신)  
-UART는 컴퓨터의 비동기 직렬 통신을 처리하는 프로그램으로서 보통 마이크로칩으로 실현되며, RS-232C 를 제공하여, 모뎀이나 기타 다른 직렬 장치들과 통신하거나 데이터를 주고받을 수 있게 하는 것이다. 예전에는 PC의 COM Port, 56Kbps 속도 이하 모뎀 등에서 이용되었으나 현재 PC에서는 USB가 그 뒤를 이어나가 대체되고 있는 실정이다. 하지만 아직까지는 막강한 표준력과 호환성을 자랑하여 MCU등에 표준적으로 사용하는 통신 방법이다.  
+#### USART 특징  
+- 동기모드    : Master(내부클럭), Slave(외부클럭:XCKn)
+- 비동기모드  : 내부클럭사용
+- 전이중 통신
+- 멀티프로세서 통신
+- 높은 정밀도의 보레이트발생기 내장
+- 전송데이터 5~9비트 설정
+- 스톱비트 1~2 설정
+- 페리티비트 설정(사용, 미사용, 짝수패리티, 홀수패리티 선택)
+- 에러검출기능 (페리티에러, 오버런에러, 프레임에러)
+- 노이즈필터링(3번 샘플링 동작)  
+#### USART 구성
+![XCKn](https://cafeptthumb-phinf.pstatic.net/20130101_70/passionvirus_1357003210184DzItk_JPEG/57-1_passionvirus.jpg?type=w740)  
+- 클럭발생부 : 보레이트발생기, 외부클럭입력 회로
+- 비동기 일반모드   : 내부클럭으로 보레이트발생
+- 비동기 2배속모드  : 내부클럭으로 2배의 보레이트발생
+- 동기 마스터 모드 
+- 동기 슬레이브 모드
+- 송신부 : 송신버퍼, 송신 시프트 레지스터, 패리티발생기
+- 수신부 : 수신버퍼, 수신 시프트 레지스터, 패리티검사기  
+#### USART 인터럽트
+- 수신완료 인터럽트
+> 데이터가 수신되어 수신시프트레지스터에서 수신버퍼(UDRn) 레지스터로 전달될 때 인터럽트가 걸린다.
+> 이 시점에서 사용자는 UDRn을 Read하면 수신데이터를 확인 할 수 있다.
+- 송신완료 인터럽트
+> 송신 시프트 레지스터에 있는 송신데이터가 모두 전송되어 비어있고 송신버퍼(UDRn) 도 비어있을 때 인터럽트가 발생된다.
+- 송신 데이터 준비완료 인터럽트
+> 송신 시프트 레지스터로 UDRn값이 전송되어 송신버퍼(UDRn)가 비어 있을 때 인터럽트가 발생한다.
+> 이 시점에서 사용자는 UDRn에 새로운 데이터를 Write하면 송신할 수 있게 된다.  
+#### 전송데이터 포맷
+![전송데이터 포맷](https://cafeptthumb-phinf.pstatic.net/20130101_81/passionvirus_1357003210429sPx5a_JPEG/58-1_passionvirus.jpg?type=w740)  
+- ATmega128 의 USART는 전송데이터의 포맷을 여러 형태로 설정할 수 있도록 되어있다.
+- Start bit   : 1                         (표준:1 bit)
+- Data bit    : 5, 6, 7, 8 or 9       (표준:8 bit)
+- Parity bit  : No, Even or Odd  (표준:0 bit)
+- Stop bit    : 1 or 2                 (표준:1 bit)  
+#### 비동기모드에서의 1비트 샘플링
+![샘플링](https://cafeptthumb-phinf.pstatic.net/20130101_202/passionvirus_13570032106854kPt1_JPEG/58-2_passionvirus.jpg?type=w740)  
+- 수신데이터의 정확한 검출을 위하여 1비트의 샘플링이 이루어진다.
+- 검출을 하기 위해서 1비트당 16배 주파수(2배속모드 : 8배주파수)를 이용한다.
+- 16배 주파수중 중앙부(8,9,10)에 3번 샘플링하여 2번 이상인 값으로 처리
 ### 관련 레지스터
 1. UDRn(Usart n I/O Data Register)  
 ![UDRn](https://cafeptthumb-phinf.pstatic.net/20130101_96/passionvirus_1357003211112hjmPX_JPEG/60-1_passionvirus.jpg?type=w740)  
@@ -132,10 +174,10 @@ UART는 컴퓨터의 비동기 직렬 통신을 처리하는 프로그램으로�
 >> 0 : 스탑비트 1개로 설정  
 
 > Bit 2,1 - UCSZn1,UCSZn0(Usart Character Size)
->> 0 0 0 : 5bit
->> 0 0 1 : 6bit
->> 0 1 0 : 7bit
->> 0 1 1 : 8bit
+>> 0 0 0 : 5bit  
+>> 0 0 1 : 6bit  
+>> 0 1 0 : 7bit  
+>> 0 1 1 : 8bit  
 >> 1 1 1 : 9bit  
 
 > Bit 0 - UCPOLn(Usart Clock Polarity)
@@ -150,4 +192,99 @@ UART는 컴퓨터의 비동기 직렬 통신을 처리하는 프로그램으로�
 > 통신속도는 표 참조  
 ![UBRR](https://cafeptthumb-phinf.pstatic.net/20130101_174/passionvirus_1357003211942CSt6R_JPEG/63-2_passionvirus.jpg?type=w740)
 
+## AD Convertor
+- 연속적인 신호인 아날로그 신호를 부호화된 디지털 신호로 변환하는 일. 아날로그 디지털 변환을 수행하는 기계 장치를 아날로그 디지털 변환기(AD Convertor)라고 하는데, 이 장치는 온도, 압력, 음성, 영상 신호, 전압 등의 실생활에서 연속적으로 측정되는 신호를 컴퓨터에 입력하여 디지털화시키는 장치이다.'
+#### A/D 컨버터 특징  
+- 8채널/ 내부 아날로그 멀티플렉서 탑재
+- 10비트 분해능
+- 축차 비교형(변환시간 수십us의 종속형 A/D Convetor)
+- 샘플/홀드회로 탑재로 인하여A/D 동작 동안 전압 고정화
+- 단극성 아날로그 입력/ 차등입력 선택
+- 차등입력에서 10배~200배의 증폭A/D 가능
+- 포트F는 아날로그 비교기 기능으로도 사용 가능
+- 변환시간(65us~260us - 50kHz~200kHz)  
+#### A/D 컨버터 구성
+- 범용PORTF의 특수 기능
+> ADC0 ~ ADC7 : 8채널10비트A/D 컨버터의 아날로그 입력단자  
+- ADC 정확도 성능 향상을 위한 독립 전원 구성
+> AVCC : Analog Supply Voltage(VCC의 전압의 ±0.3V 유지 해야함)
+> AGND : Analog Ground (반드시GND와 연결)
+> AREF : Analog Reference Voltage  
+- 일반 모드 입력전압의 범위 : 0V ~ Vref
+- 차동입력 모드 입력전압의 범위 : -Vref~ Vref
+- Vref의 범위는 전원전압VCC를 초과할 수 없다.(Vref=VGND~VCC, 내부기준전압2.56V)  
+#### A/D 변환 오차
+1. 양자화 오차 : 아날로그 값을 디지털 값으로 변환하면서 생기는 변환의 한계. 분해능이 높은 ADC 필요
+2. 오프셋 오차 : 변환 결과가 이상적인 값에서 일정한 양만큼 오차 발생. 변환된 값에 일정한 값을 더하거나 빼서 교정
+3. 이득 오차 : 변환 결과가 이상적인 값에서 일정한 비율만큼 오차 발생. 변환된 값에 일정한 값을 곱하거나 나눠서 교정
+4. 비선형 오차 : 변환 결과가 교정될 수 없는 상태
+5. 차등 비선형 오차 : 변환 결과가 교정될 수 없는 상태  
+#### A/D 컨버터 잡음 제거
+- A/D Convertor는 노이즈에 매우 민감하여 ATmega128 내부에서도 AVCC,AREF,AGND의 ADC 전원 구성도 따로 하였다.
+1. 아날로그 입력선은 최소한으로 짧게 하고 잡음의 영향이 없도록 회로를 구성한다.
+2. 아날로그 전원단자 AVCC에 VCC를 인가할 때는LC필터를 거쳐 안정하 시킨다.
+3. 아날로그 회로의 모든 접지는 AGND에 접지하여 한 포인트에서만 GND와 접속한다.
+4. ADC 동작중에는 병렬I/O 포트의 논리상태를 스위칭 하지 않는다.
+5. 잡음에 민감한 아날로그 소자의ADC의 경우에는 Adc Noise Reduction mode를 사용한다.
+6. 잡음이 심하여 결과값의 변동이 심하면 디지털 필터를 사용하거나 평균치를 구하여 사용한다.
+### 관련 레지스터
+1. ADMUX(ADC Multiflexer Selection Register)
+> Bit 7,6 - REFS1,REFS0(Reference Selection)
+>> 0 0 : AREF 단자에 입력된 전압 사용
+>> 0 1 : AVCC 단자에 입력된 전압 사용
+>> 1 1 : 내부 2.56V 사용  
+
+> Bit 5 - ADLAR(ADC Left Adjust Result)
+>> 1 : 변환 결과값을 ADCH/L에 저장할 때 좌측으로 끝을 맞추어 저장함
+
+> Bit 4,3,2,1,0 - MUXn(Analog Channel and Gain Selection)  
+> ![Muxn](https://cafeptthumb-phinf.pstatic.net/20130101_57/passionvirus_1357007171225eDY2d_JPEG/70-3_passionvirus.jpg?type=w740)  
+
+2. ADCSRA(ADC Control and Status Register A)
+> Bit 7 - ADEN (ADC Enable)
+>> 1 : ADC 활성화
+
+> Bit 6 - ADSC (ADC Start Conversion)
+>> 1 : ADC 변환 시작 (단일변환모드일 때 한번만 작동/ 프리런닝모드일 때 변환동작 반복)
+
+> Bit 5 - ADFR (ADC Free Running Mode)
+>> 1 : 프리런닝모드
+>> 0 : 단일변환모드
+
+> Bit 4 - ADIF (ADC Interrupt Flag)
+>> ADC 변환완료 인터럽트가 요청되고 그 상태를 표시하는 비트
+
+> Bit 3 - ADIE (ADC Interrupt Enable)
+>> 1 : ADC Interrupt 활성화
+
+> Bit 2,1,0 - ADPS2,1,0 (ADC Prescaler Select)  
+> ![ADPS](https://t1.daumcdn.net/cfile/tistory/2761DA3C576CC99314)  
+
+3. ADCH/L (ADC Data Register)  
+![ADCH/L](https://cafeptthumb-phinf.pstatic.net/20130101_49/passionvirus_1357007171631mT632_JPEG/72_passionvirus.jpg?type=w740)  
+- ADC 변환결과를 저장한다
+
+### A/D Converter의 동작
+- 단일변환모드(Single conversion mode)           : ADC 동작을 한번만 수행하게 된다.
+- 프리런닝모드(Free running mode)                  : ADC 동작을 반복적으로 수행하게 된다.
+1. A/D 컨버터 초기화 설정
+- ADC 활성화(ADEN=1)
+- ADC 클럭설정(ADPS 2~0)
+- ADC 기준전압설정(REF 1~0)
+- ADC 입력채널설정(MUX 4~0)
+- ADC 동작모드설정(ADFR)
+- ADC 변환 완료 인터럽트 활성화(ADIE)
+2. A/D 컨버터 스타트
+- ADC 시작신호(ADSC)
+3. A/D 변환
+- ADC 변환 결과  
+> ![ADC](https://cafeptthumb-phinf.pstatic.net/20130101_191/passionvirus_1357007171837CdpwH_JPEG/73-1_passionvirus.jpg?type=w740)  
+4. A/D 변환 완료
+- ADC 변환이 완료되면 변환값을 ADCH/L에 저장
+5. A/D 변환 완료 인터럽트 요청
+- ADC Conversion Complete Interrupt 요청
+6. ADC 상태 플래그 셋
+- ADIF = 1
+7. ADC 다음 동작 결정
+- 단일/연속동작인지 구분하여 다음 동작 수행을 결정한다. (ADFR)
 
