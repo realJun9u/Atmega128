@@ -26,7 +26,7 @@
   > Normal mode : 0 0 Overflow Interrupt에 사용  
     CTC mode(Compare Timer on Compare Match mode) : 1 0 Compare Match Interrupt에 사용  
     Fast PWM : 1 1 DC모터 세기, LED 밝기, 서보모터 등 듀티비를 이용하여 제어할 때 사용  
-    Phase Correct PWM : 0 1 
+    Phase Correct PWM : 0 1  
   ![WGM](https://t1.daumcdn.net/cfile/tistory/990BE53359C3773326)  
   BIT 5,4 - COM01,COM00 (Compare Match Output Mode) : 비교매치 출력 모드  
   ![phase correct PWM](https://t1.daumcdn.net/cfile/tistory/992A473359CF36AD17)  
