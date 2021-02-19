@@ -2,6 +2,7 @@
 - [타이머/카운터](#timer-counter)
 - [USART](#uart)
 - [ADC](#ad-convertor)
+- [SPI](#spi)
 ## Timer Counter 
 - overflow interrupt : TCNTn값이 Max에서 1이 증가하면 0이 되고 이 때 Overflow Interrupt 발생  
 - compare match interrupt : TCNTn가 OCRn값을 비교하여 같으면 Interrupt 발생  
@@ -288,3 +289,68 @@
 7. ADC 다음 동작 결정
 - 단일/연속동작인지 구분하여 다음 동작 수행을 결정한다. (ADFR)
 
+## SPI
+- SPI(Serial Peripheral Interface)는 Motorola사에 의하여 개발된 근거리용 직렬통신 규격으로서, MOSI, MISO, SCK, /SS의 4개 통신선을 이용하는 고속 동기식 직렬통신 방식이다. 이는 UART 통신 규격에 비하여 빠른 속도와 멀티 통신이 지원되며, I2C 통신 규격에 비하여 빠르며 간단한 제어가 장점으로 꼽힌다. 그래서 최근 SD메모리나 EEPROM 같은 외부 디바이스들이 SPI통신을 지원하기 시작했다. SPI통신은 장치간에 1:1 통신 중 근거리에서 빠른 속도의 데이터 전송이 요구될 때 사용하는 것을 추천한다.  
+#### SPI 특징
+• MOSI, MISO, SCK, /SS 의 4선을 사용하는 직렬 동기식 통신
+• 전이중 통신이 가능.
+• 항상 Master와 Slave 사이에서 직렬로 데이터를 송수신.
+• 클럭은 항상 Master가 발생
+• LSB(최하위비트) or MSB(최상위비트)에서 전송 가능
+• 수 MHz의 통신 가능 및 7가지 전송속도 중 선택 사용
+• 전송완료 인터럽트 발생
+• Wake-Up : 슬립모드 해제기능
+• 직렬통신뿐만 아니라 사용자 프로그램을 다운로드 하는 ISP로서도 이용 가능  
+#### SPI 구성
+![SPI 구성](https://cafeptthumb-phinf.pstatic.net/20130101_55/passionvirus_1357008785147gJpUS_JPEG/75-1_passionvirus.jpg?type=w740)  
+※ SPI는 마스터/슬레이브 모드에 따라 데이터의 입출력이 변경시켜야 하는데 데이터시트에 의하면 유저정의도 가능하나 데이터의 충돌을 피하기 위해서는 위 표의 입출력사항을 지켜줘야 한다.
+### 관련 레지스터
+1. SPCR (SPI Control Register)  
+![SPCR](https://cafeptthumb-phinf.pstatic.net/20130101_276/passionvirus_1357008785583CCdHT_JPEG/77-1_passionvirus.jpg?type=w740)  
+- Bit 7 - SPIE (SPI Interrupt Enable)
+> 1 : SPI 인터럽트 기능 활성화
+- Bit 6 - SPE (SPI Enable)
+> 1 : SPI 동작 활성화
+- Bit 5 - DORD (Data Order)
+> 1 : 데이타 워드중 LSB가 먼저 전송된다.
+▪ DORD = 0 : 데이타 워드중 MSB가 먼저 전송된다.
+- Bit 4 - MSTR (Master/Slave Select)
+> 1 : 마스터 모드
+> 0 : 슬레이브 모드
+- Bit 3 - CPOL (Clock Polarity)
+> 1 : IDLE 상태일 때 SCK = High
+> 0 : IDLE 상태일 때 SCK = Low  
+> ![CPOL](https://cafeptthumb-phinf.pstatic.net/20130101_69/passionvirus_1357008785786QzzRG_JPEG/77-3_passionvirus.jpg?type=w740)  
+- Bit 2 - CPHA (Clock Phase)
+> 데이터 샘플링 동작이 수행되는 SCK의 위상 결정  
+> ![CPHA](https://cafeptthumb-phinf.pstatic.net/20130101_170/passionvirus_13570087859716wOrg_JPEG/77-4_passionvirus.jpg?type=w740)  
+- Bit 1,0 - SPR1,0 (SPI Clock Rate Select)  
+> ![SPR](https://cafeptthumb-phinf.pstatic.net/20130101_291/passionvirus_1357008786600BloAl_JPEG/79-1_passionvirus.jpg?type=w740)  
+> 이 두비트는 마스터로 선택된 장치의 SCK의 속도를 조정한다. SPR1과 SPR0는 슬레이브에게는 영향을 주지 않는다.
+2. SPSR(SPI Status Register)  
+![SPSR](https://cafeptthumb-phinf.pstatic.net/20130101_65/passionvirus_1357008786832DBkpJ_JPEG/79-2_passionvirus.jpg?type=w740)  
+• Bit 7 - SPIF : SPI Interrupt Flag
+> 1 : 시리얼 전송이 완료되면 SET
+• Bit 6 - WCOL : Write COLision Flag
+> 1 : SPI데이터 레지스터가 전송 중에 쓰여질 때(written) Set 된다.
+• Bit 0 - SPI2X : 2배속 SPI 비트
+> 1 : 마스터 모드일 때 SPI의 속도( SCK 주파수)는 2배가 된다.
+3. SPDR(SPI Data Register)  
+![SPDR](https://cafeptthumb-phinf.pstatic.net/20130101_216/passionvirus_13570087870091Q42n_JPEG/79-3_passionvirus.jpg?type=w740)  
+- SPDR은 SPI가 송신할 데이터를 저장하거나 수신한 데이터를 저장하게 된다. 사용자는 이 레지스터에 데이터를 쓰는 것으로서 SPI 송신을 수행하게 되며 읽는 것으로서 SPI 수신이 이루어지게 된다.  
+#### SPI 동작 순서
+1. 마스터 모드
+> /SS, SCK, MOSI 단자를 출력으로 설정, MISO 단자를 입력으로 설정 
+> /SS 신호를 LOW로 출력하여 슬레이브 선택
+> SPDR 레지스터에 전송할 바이트를 라이트 하여 송신 시작
+> SCK클럭 발생하고 하드웨어적으로 데이터를 8Bit만큼 시프트하여 슬레이브로 전송
+> 1바이트 전송이 끝나면 클럭이 정지되고 SPIF 비트가 1되면서 SPI 전송완료 인터럽트 요청
+> 이 후 SPDR 레지스터에 바이트를 라이트 하면 그 다음의 전송이 시작
+> 데이터 패킷을 종료하려면 /SS 단자에 HIGH 신호 출력  
+2. 슬레이브 모드  
+> /SS, SCK, MOSI 단자를 입력으로 설정, MISO 단자를 출력으로 설정
+> SPI가 슬레이브로 동작 시 /SS 단자가 자동으로 입력핀으로 동작
+> /SS 신호가 LOW 상태로 입력된 경우에 SPI는 슬레이브로 동작이 유효하게 된다.
+> 만약 /SS 신호가 HIGH 상태로 입력되면 모든 SPI 신호가 3스테이트 또는 입력 상태로 변함
+> /SS 신호가 LOW 상태로 입력되고 외부에서 입력된 SCK 신호에 의하여 데이터 레지스터의 1바이트가 전송되고 나면 SPIF 비트가 1로 되면서 SPI전송완료 인터럽트가 요청.
+> SPI 전송완료 인터럽트를 체크하여 수신데이터를 보낸다.
