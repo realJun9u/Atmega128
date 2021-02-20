@@ -116,15 +116,15 @@
 >> 1 : 송신 버퍼가 비어있어서 새로운 송신 데이터를 받을 준비가 된 상태  
 
 > Bit 4 - FEn(Frame Error)
->> 1 : 수신할 때 프레임 에러가 발생한 상태
+>> 1 : 수신할 때 프레임 에러가 발생한 상태  
 >> 프레임 에러 : 수신 문자의 첫 번째 스톱 비트가 0으로 검출되는 것  
 
 > Bit 3 - DORn(Data Overrun Error)
->> 1 : 수신할 때 오버런 에러가 발생한 상태
+>> 1 : 수신할 때 오버런 에러가 발생한 상태  
 >> 오버런 에러 : 수신버퍼에 읽지 않은 데이터가 들어있는 상태에서 수신 시프트 레지스터에 새로운 데이터가 수신 완료되고 다시 그 다음 수신 데이터인 3번째 데이터의 스타트 비트가 검출된 것  
 
 > Bit 2 - UPEn(Usart Parity Error) 
->> 1 : 수신할 때 패리티 에러가 발생한 상태
+>> 1 : 수신할 때 패리티 에러가 발생한 상태  
 >> 패리티 에러 : 정보의 전달 과정에서 오류가 생겼는지를 검사하기 위해 원래의 정보에 덧붙이는 비트를 패리티비트라하며 데이터비트와 패리티비트를 계산하여 짝수,홀수를 판별하여 에러인지 아닌지 구분한다.  
 
 > Bit 1 - U2Xn(Double the Usart Transmission Speed)
@@ -162,16 +162,16 @@
 4. UCSRnC(Usart Control and Status Register C)  
 ![UCSRnC](https://cafeptthumb-phinf.pstatic.net/20130101_231/passionvirus_1357003211607U4RcT_JPEG/62-1_passionvirus.jpg?type=w740)  
 > Bit 6 - UMSELn(Usart Mode Select)
->> 1 : 동기 전송 모드
+>> 1 : 동기 전송 모드  
 >> 0 : 비동기 전송 모드  
 
 > Bit 5,4 - UPMn1,UPMn0(Usart Parity Mode)
->> 0 0 : 패리티 체크 기능 사용 X
->> 1 0 : 짝수 패리티 방식 활성화
+>> 0 0 : 패리티 체크 기능 사용 X  
+>> 1 0 : 짝수 패리티 방식 활성화  
 >> 1 1 : 홀수 패리티 방식 활성화  
 
 > Bit 3 - USBSn(Usart Stop Bit Select)
->> 1 : 스탑비트 2개로 설정
+>> 1 : 스탑비트 2개로 설정  
 >> 0 : 스탑비트 1개로 설정  
 
 > Bit 2,1 - UCSZn1,UCSZn0(Usart Character Size)
@@ -182,8 +182,8 @@
 >> 1 1 1 : 9bit  
 
 > Bit 0 - UCPOLn(Usart Clock Polarity)
->> 동기 전송 모드의 슬레이브 동작에서만 사용됨
->> 1 : 송신데이터는 XCKn 클럭의 하강에지에서 새로운 값 출력,수신데이터는 상승에지에서 검출
+>> 동기 전송 모드의 슬레이브 동작에서만 사용됨  
+>> 1 : 송신데이터는 XCKn 클럭의 하강에지에서 새로운 값 출력,수신데이터는 상승에지에서 검출  
 >> 0 : 송신데이터는 XCKn 클럭의 상승에지에서 새로운 값 출력,수신데이터는 하강에지에서 검출  
 
 5. UBRRnH/L(Usart Baud Rate Register)  
@@ -203,13 +203,13 @@
 - 단극성 아날로그 입력/ 차등입력 선택
 - 차등입력에서 10배~200배의 증폭A/D 가능
 - 포트F는 아날로그 비교기 기능으로도 사용 가능
-- 변환시간(65us~260us - 50kHz~200kHz)  
+- 변환시간(65us ~ 260us - 50kHz ~ 200kHz)  
 #### A/D 컨버터 구성
 - 범용PORTF의 특수 기능
 > ADC0 ~ ADC7 : 8채널10비트A/D 컨버터의 아날로그 입력단자  
 - ADC 정확도 성능 향상을 위한 독립 전원 구성
-> AVCC : Analog Supply Voltage(VCC의 전압의 ±0.3V 유지 해야함)
-> AGND : Analog Ground (반드시GND와 연결)
+> AVCC : Analog Supply Voltage(VCC의 전압의 ±0.3V 유지 해야함)  
+> AGND : Analog Ground (반드시GND와 연결)  
 > AREF : Analog Reference Voltage  
 - 일반 모드 입력전압의 범위 : 0V ~ Vref
 - 차동입력 모드 입력전압의 범위 : -Vref~ Vref
@@ -292,14 +292,14 @@
 ## SPI
 - SPI(Serial Peripheral Interface)는 Motorola사에 의하여 개발된 근거리용 직렬통신 규격으로서, MOSI, MISO, SCK, /SS의 4개 통신선을 이용하는 고속 동기식 직렬통신 방식이다. 이는 UART 통신 규격에 비하여 빠른 속도와 멀티 통신이 지원되며, I2C 통신 규격에 비하여 빠르며 간단한 제어가 장점으로 꼽힌다. 그래서 최근 SD메모리나 EEPROM 같은 외부 디바이스들이 SPI통신을 지원하기 시작했다. SPI통신은 장치간에 1:1 통신 중 근거리에서 빠른 속도의 데이터 전송이 요구될 때 사용하는 것을 추천한다.  
 #### SPI 특징
-• MOSI, MISO, SCK, /SS 의 4선을 사용하는 직렬 동기식 통신
-• 전이중 통신이 가능.
-• 항상 Master와 Slave 사이에서 직렬로 데이터를 송수신.
-• 클럭은 항상 Master가 발생
-• LSB(최하위비트) or MSB(최상위비트)에서 전송 가능
-• 수 MHz의 통신 가능 및 7가지 전송속도 중 선택 사용
-• 전송완료 인터럽트 발생
-• Wake-Up : 슬립모드 해제기능
+• MOSI, MISO, SCK, /SS 의 4선을 사용하는 직렬 동기식 통신  
+• 전이중 통신이 가능  
+• 항상 Master와 Slave 사이에서 직렬로 데이터를 송수신  
+• 클럭은 항상 Master가 발생  
+• LSB(최하위비트) or MSB(최상위비트)에서 전송 가능  
+• 수 MHz의 통신 가능 및 7가지 전송속도 중 선택 사용  
+• 전송완료 인터럽트 발생  
+• Wake-Up : 슬립모드 해제기능  
 • 직렬통신뿐만 아니라 사용자 프로그램을 다운로드 하는 ISP로서도 이용 가능  
 #### SPI 구성
 ![SPI 구성](https://cafeptthumb-phinf.pstatic.net/20130101_55/passionvirus_1357008785147gJpUS_JPEG/75-1_passionvirus.jpg?type=w740)  
@@ -312,13 +312,13 @@
 - Bit 6 - SPE (SPI Enable)
 > 1 : SPI 동작 활성화
 - Bit 5 - DORD (Data Order)
-> 1 : 데이타 워드중 LSB가 먼저 전송된다.
-▪ DORD = 0 : 데이타 워드중 MSB가 먼저 전송된다.
+> 1 : LSB가 먼저 전송  
+> 0 : MSB가 먼저 전송
 - Bit 4 - MSTR (Master/Slave Select)
-> 1 : 마스터 모드
+> 1 : 마스터 모드  
 > 0 : 슬레이브 모드
 - Bit 3 - CPOL (Clock Polarity)
-> 1 : IDLE 상태일 때 SCK = High
+> 1 : IDLE 상태일 때 SCK = High  
 > 0 : IDLE 상태일 때 SCK = Low  
 > ![CPOL](https://cafeptthumb-phinf.pstatic.net/20130101_69/passionvirus_1357008785786QzzRG_JPEG/77-3_passionvirus.jpg?type=w740)  
 - Bit 2 - CPHA (Clock Phase)
@@ -329,11 +329,11 @@
 > 이 두비트는 마스터로 선택된 장치의 SCK의 속도를 조정한다. SPR1과 SPR0는 슬레이브에게는 영향을 주지 않는다.
 2. SPSR(SPI Status Register)  
 ![SPSR](https://cafeptthumb-phinf.pstatic.net/20130101_65/passionvirus_1357008786832DBkpJ_JPEG/79-2_passionvirus.jpg?type=w740)  
-• Bit 7 - SPIF : SPI Interrupt Flag
+- Bit 7 - SPIF : SPI Interrupt Flag
 > 1 : 시리얼 전송이 완료되면 SET
-• Bit 6 - WCOL : Write COLision Flag
+- Bit 6 - WCOL : Write COLision Flag
 > 1 : SPI데이터 레지스터가 전송 중에 쓰여질 때(written) Set 된다.
-• Bit 0 - SPI2X : 2배속 SPI 비트
+- Bit 0 - SPI2X : 2배속 SPI 비트
 > 1 : 마스터 모드일 때 SPI의 속도( SCK 주파수)는 2배가 된다.
 3. SPDR(SPI Data Register)  
 ![SPDR](https://cafeptthumb-phinf.pstatic.net/20130101_216/passionvirus_13570087870091Q42n_JPEG/79-3_passionvirus.jpg?type=w740)  
@@ -341,16 +341,16 @@
 #### SPI 동작 순서
 1. 마스터 모드
 > /SS, SCK, MOSI 단자를 출력으로 설정, MISO 단자를 입력으로 설정 
-> /SS 신호를 LOW로 출력하여 슬레이브 선택
-> SPDR 레지스터에 전송할 바이트를 라이트 하여 송신 시작
-> SCK클럭 발생하고 하드웨어적으로 데이터를 8Bit만큼 시프트하여 슬레이브로 전송
-> 1바이트 전송이 끝나면 클럭이 정지되고 SPIF 비트가 1되면서 SPI 전송완료 인터럽트 요청
-> 이 후 SPDR 레지스터에 바이트를 라이트 하면 그 다음의 전송이 시작
+> /SS 신호를 LOW로 출력하여 슬레이브 선택  
+> SPDR 레지스터에 전송할 바이트를 라이트 하여 송신 시작  
+> SCK클럭 발생하고 하드웨어적으로 데이터를 8Bit만큼 시프트하여 슬레이브로 전송  
+> 1바이트 전송이 끝나면 클럭이 정지되고 SPIF 비트가 1되면서 SPI 전송완료 인터럽트 요청  
+> 이 후 SPDR 레지스터에 바이트를 라이트 하면 그 다음의 전송이 시작  
 > 데이터 패킷을 종료하려면 /SS 단자에 HIGH 신호 출력  
 2. 슬레이브 모드  
-> /SS, SCK, MOSI 단자를 입력으로 설정, MISO 단자를 출력으로 설정
-> SPI가 슬레이브로 동작 시 /SS 단자가 자동으로 입력핀으로 동작
-> /SS 신호가 LOW 상태로 입력된 경우에 SPI는 슬레이브로 동작이 유효하게 된다.
-> 만약 /SS 신호가 HIGH 상태로 입력되면 모든 SPI 신호가 3스테이트 또는 입력 상태로 변함
-> /SS 신호가 LOW 상태로 입력되고 외부에서 입력된 SCK 신호에 의하여 데이터 레지스터의 1바이트가 전송되고 나면 SPIF 비트가 1로 되면서 SPI전송완료 인터럽트가 요청.
+> /SS, SCK, MOSI 단자를 입력으로 설정, MISO 단자를 출력으로 설정  
+> SPI가 슬레이브로 동작 시 /SS 단자가 자동으로 입력핀으로 동작  
+> /SS 신호가 LOW 상태로 입력된 경우에 SPI는 슬레이브로 동작이 유효하게 된다.  
+> 만약 /SS 신호가 HIGH 상태로 입력되면 모든 SPI 신호가 3스테이트 또는 입력 상태로 변함  
+> /SS 신호가 LOW 상태로 입력되고 외부에서 입력된 SCK 신호에 의하여 데이터 레지스터의 1바이트가 전송되고 나면 SPIF 비트가 1로 되면서 SPI전송완료 인터럽트가 요청.  
 > SPI 전송완료 인터럽트를 체크하여 수신데이터를 보낸다.
