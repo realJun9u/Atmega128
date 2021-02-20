@@ -192,7 +192,9 @@
 > USART 송/수신 속도 설정
 > UBRRnH - UBRRnL 순서로 라이트해야 한다.
 > 통신속도는 표 참조  
-![UBRR](https://cafeptthumb-phinf.pstatic.net/20130101_174/passionvirus_1357003211942CSt6R_JPEG/63-2_passionvirus.jpg?type=w740)
+![UBRR](https://cafeptthumb-phinf.pstatic.net/20130101_174/passionvirus_1357003211942CSt6R_JPEG/63-2_passionvirus.jpg?type=w740)  
+#### UART의 동작  
+![UART 동작](https://cafeptthumb-phinf.pstatic.net/20130101_238/passionvirus_1357003210906eMDtH_JPEG/59-1_passionvirus.jpg?type=w740)  
 
 ## AD Convertor
 - 연속적인 신호인 아날로그 신호를 부호화된 디지털 신호로 변환하는 일. 아날로그 디지털 변환을 수행하는 기계 장치를 아날로그 디지털 변환기(AD Convertor)라고 하는데, 이 장치는 온도, 압력, 음성, 영상 신호, 전압 등의 실생활에서 연속적으로 측정되는 신호를 컴퓨터에 입력하여 디지털화시키는 장치이다.'
