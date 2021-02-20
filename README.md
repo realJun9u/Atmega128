@@ -3,6 +3,7 @@
 - [USART](#uart)
 - [ADC](#ad-convertor)
 - [SPI](#spi)
+- [I2C](#i2c)
 ## Timer Counter 
 - overflow interrupt : TCNTn값이 Max에서 1이 증가하면 0이 되고 이 때 Overflow Interrupt 발생  
 - compare match interrupt : TCNTn가 OCRn값을 비교하여 같으면 Interrupt 발생  
@@ -354,3 +355,35 @@
 > 만약 /SS 신호가 HIGH 상태로 입력되면 모든 SPI 신호가 3스테이트 또는 입력 상태로 변함  
 > /SS 신호가 LOW 상태로 입력되고 외부에서 입력된 SCK 신호에 의하여 데이터 레지스터의 1바이트가 전송되고 나면 SPIF 비트가 1로 되면서 SPI전송완료 인터럽트가 요청.  
 > SPI 전송완료 인터럽트를 체크하여 수신데이터를 보낸다.
+
+## I2C  
+![I2C](https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2Fbfk5A2%2FbtqxmvIKcDi%2FLqEGKLB9cIiQkP1KCeu4Qk%2Fimg.png)  
+- I2C(Inter-Intergrated Circuit)는 TWI(Two-Wire Serial Interface)라고도 부른다. 클럭과 데이터로 구성된 두 개의 버스 선(SDA, SCL)으로 이루어져 있으며, 7비트로 128개의 서로 다른 디바이스를 제어할 수 있다. 각 버스선 마다 풀업 저항이 연결되어 있으며, 마스터와 슬레이브 동작을 동시에 지원한다. 데이터 선이 하나 밖에 없으므로 반이중(half-duplex) 통신을 할 수 밖에 없고 SPI와 마찬가지로 마스터-슬레이브 구조를 따른다.
+![TWI 모듈](https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FdctN3C%2FbtqxomYBHMS%2FOx7lLEPDi4CCKigOGEZ8Lk%2Fimg.png)  
+### 레지스터  
+1. TWBR (TWI Bit Rate Register) : TWI 전송 속도 (SCL 클럭 주파수) 설정
+![TWBR](https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FbHLLSI%2FbtqxnnKelYo%2FznV9B9eMkdRuksbMUQk9DK%2Fimg.png)  
+![SCL frequency](https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FcCxK0b%2Fbtqxpe6RHRS%2FEqlkWRkiUtS7Pqw7KzBa1k%2Fimg.png)  
+2. TWCR (TWI Control Register) : TWI 동작 제어  
+![TWCR](https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FxS4wQ%2FbtqxoPTMRi0%2Fc1kefzLP5qkaJCNfGF2pE1%2Fimg.png)  
+- Bit 7 - TWINT (TWI INTerrupt flag) : 
+- Bit 6 - TWEA (TWI Enable Acknowledge) :
+- Bit 5 - TWSTA (TWI Start) :
+- Bit 4 - TWSTO (TWI STOP) :
+- Bit 3 - TWWC (TWI Write Collision flag) :
+- Bit 2 - TWEN (TWI ENable) : TWI 활성화
+- Bit 0 - TWIE (TWI Interrupt Enable) : TWI 인터럽트 활성화
+3. TWSR (TWI Status Register)  
+![TWSR](https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2F8otY3%2FbtqxoPz1Asj%2FmQAZtsHN35YGIUkEeBkR0K%2Fimg.png)  
+- Bit 7 ~ 3 - TWI의 로직, 상태를 나타냄  
+- Bit 1,0 - TWPS1,0 (TWI PreScaler)  
+![TWPR](https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2Fmlz7D%2FbtqxonKwAYr%2FsgT7x1ARTNEfAreO2vEak0%2Fimg.png)  
+4. TWDR (TWI Data Register) : 송신할 때는 전송할 데이터 저장, 수신일 때는 이전 데이터 저장  
+![TWDR](https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FFsE2q%2FbtqxpdAHAMa%2FQ9pcs4f38kCornhl8Ux9HK%2Fimg.png)  
+5. TWAR (TWI Address Register)  
+![TWAR](https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FMBbek%2FbtqxqWSx4E5%2FXRKV0rotnMWJuJZDy8d1C0%2Fimg.png)  
+- Bit 7 ~ 1 - TWA6 ~ 0 (TWI Address) : 수신할 7비트의 slave 주소  
+- Bit 0 - TWGCE (TWI General Call Enable) : 1일 때 general call을 인식. 마스터에서 START신호를 발생하고 TWDR에 0x00을 넣으면 general을  의미하며, TWGCE가 1인 slave들이 응답하게 된다.  
+#### TWI 통신의 동작  
+![TWI 동작](https://t1.daumcdn.net/cfile/tistory/21052B485713168918)  
+
