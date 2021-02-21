@@ -244,7 +244,8 @@
 > Bit 4,3,2,1,0 - MUXn(Analog Channel and Gain Selection)  
 > ![Muxn](https://cafeptthumb-phinf.pstatic.net/20130101_57/passionvirus_1357007171225eDY2d_JPEG/70-3_passionvirus.jpg?type=w740)  
 
-2. ADCSRA(ADC Control and Status Register A)
+2. ADCSRA(ADC Control and Status Register A)  
+![ADCSRA](https://cafeptthumb-phinf.pstatic.net/20130101_100/passionvirus_1357007171452r6tAV_JPEG/71-1_passionvirus.jpg?type=w740)  
 > Bit 7 - ADEN (ADC Enable)
 >> 1 : ADC 활성화
 
