@@ -2,22 +2,22 @@
 #include <avr/io.h>
 
 void Uart1_init(void){
-	UBRR1H=0x00;
-	UBRR1L=103; // 9600pbs
+	UBRR0H=0x00;
+	UBRR0L=103; // 9600pbs
 	
-	UCSR1B=(1<<RXEN1)|(1<<TXEN1); // 송,수신 기능 활성화
-	UCSR1C=(3<<UCSZ10); // Start 1 bit, Data 8 bit, Stop 1 bit
-	DDRD=(0<<DDRD2)|(1<<DDRD1); // RXD1 입력, TXD1 출력 설정
+	UCSR0B=(1<<RXEN0)|(1<<TXEN0); // 송,수신 기능 활성화
+	UCSR0C=(3<<UCSZ00); // Start 1 bit, Data 8 bit, Stop 1 bit
+	DDRD=(0<<DDRE0)|(1<<DDRD1); // RXD1 입력, TXD1 출력 설정
 }
 
 unsigned char Uart1_getch(void){
-	while(!(UCSR1A&(1<<RXC1)));
-	return UDR1;
+	while(!(UCSR0A&(1<<RXC0)));
+	return UDR0;
 }
 
 void Uart1_putch(unsigned char data){
-	while(!(UCSR1A&(1<<UDRE1)));
-	UDR1=data;
+	while(!(UCSR0A&(1<<UDRE0)));
+	UDR0=data;
 }
 
 int main(void){
