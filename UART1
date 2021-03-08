@@ -1,7 +1,7 @@
 #define F_CPU 16000000L
 #include <avr/io.h>
 
-void Uart1_init(void){
+void Uart_init(void){
 	UBRR0H=0x00;
 	UBRR0L=103; // 9600pbs
 	
@@ -10,19 +10,19 @@ void Uart1_init(void){
 	DDRD=(0<<DDRE0)|(1<<DDRD1); // RXD1 입력, TXD1 출력 설정
 }
 
-unsigned char Uart1_getch(void){
+unsigned char Uart_getch(void){
 	while(!(UCSR0A&(1<<RXC0)));
 	return UDR0;
 }
 
-void Uart1_putch(unsigned char data){
+void Uart_putch(unsigned char data){
 	while(!(UCSR0A&(1<<UDRE0)));
 	UDR0=data;
 }
 
 int main(void){
-	Uart1_init();
+	Uart_init();
 	while(1){
-		Uart1_putch(Uart1_getch());
+		Uart_putch(Uart_getch());
 	}
 }
