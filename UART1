@@ -1,0 +1,30 @@
+#define F_CPU 16000000L
+#include <avr/io.h>
+#include <avr/interrupt.h>
+
+void Uart1_init(void){
+	UBRR1H=0x00;
+	UBRR1L=103; // 9600pbs
+	
+	UCSR1B=(1<<RXEN1)|(1<<TXEN1); // 송,수신 기능 활성화
+	UCSR1C=(3<<UCSZ10); // Start 1 bit, Data 8 bit, Stop 1 bit
+	DDRD=(0<<DDRD2)|(1<<DDRD1); // RXD1 입력, TXD1 출력 설정
+	sei(); // 모든 인터럽트 활성화
+}
+
+unsigned char Uart1_getch(void){
+	while(!(UCSR1A&(1<<RXC1)));
+	return UDR1;
+}
+
+void Uart1_putch(unsigned char data){
+	while(!(UCSR1A&(1<<UDRE1)));
+	UDR1=data;
+}
+
+int main(void){
+	Uart1_init();
+	while(1){
+		Uart1_putch(Uart1_getch());
+	}
+}
